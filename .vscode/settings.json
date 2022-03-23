@@ -1,0 +1,14 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "documentacion_eliminar_futuro": true
+    },
+    "hide-files.files": [
+        "documentacion_eliminar_futuro"
+    ]
+}
