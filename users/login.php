@@ -8,11 +8,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/helpers.inc.php';
 $email = "asda@gmail.com";
 
 // ver si esta definida las variables 
-// $email = (isset($_GET['email'])) ? (html($_GET['email'])) : "";
-// $pass = (isset($_GET['pass'])) ? (html($_GET['pass'])) : "";
+ $email = (isset($_GET['email'])) ? (html($_GET['email'])) : "";
+
+$pass = (isset($_GET['pass'])) ? (html($_GET['pass'])) : "";
 
 
-$pas = "123";
+//$pas = "123";
 try {
 
 // conexion base de datos
