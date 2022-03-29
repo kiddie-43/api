@@ -8,8 +8,6 @@ $user_email = (isset($_GET['email'])) ? (html($_GET['email'])) : "";
 
 $user_pass = (isset($_GET['pass'])) ? (html($_GET['pass'])) : "";
 
-
-//$pas = "123";
 try {
 
 // conexion base de datos
@@ -17,16 +15,17 @@ try {
 // Montar query
     $query = "SELECT COUNT(*) as estado,  id_user, email_user, pass FROM users where email_user = :email ";
 
-    // Realizar peticion al server
     $result = $pdo->prepare($query);
-
     $result->bindValue(":email", $user_email);
-   
+
     $result->execute();
    
 } catch (PDOException $e) {
     echo json_encode('Unable to connect to the database server.');
 }
+
+
+
 
 // Añadir datos  
 foreach ($result as $row) {
@@ -45,6 +44,6 @@ foreach ($result as $row) {
 
 // Valida si la  contraseña es correcta y si no hay errores  
 function validacionPassword( $pass, $dataPass  ) {
-
+    
 return ($pass != $dataPass  ) ? "La contraseña no es correcta" : "";
- }
+}

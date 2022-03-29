@@ -86,3 +86,14 @@ function carruselImagenes($id_usuario)
 
     return $rutas;
 }
+
+// comprueba si esta definido y no esta vacio 
+// function estaDefinido ($dato) {
+//     $resultado = ( $dato != "" ) ? $dato : "";
+
+//     return html($resultado);  
+// }
+
+// function estaVacio($dato) {
+//     return (strlen($dato) > 0 ) ? true : false;
+// }
