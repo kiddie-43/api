@@ -17,7 +17,7 @@ if (isset($_GET["comprobar_nick"])){
     combrobarNick ( html($_GET["comprobar_nick"]) );
 
 } else if (isset($_GET["comprobar_email"])){
-
+    combrobarEmail(html($_GET["comprobar_email"])));
 } else if (isset($_GET["comprobar_telefono"])){
     combrobartelefono( html( $_GET["comprobar_telefono"] ) );
 } else {
