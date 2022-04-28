@@ -29,7 +29,7 @@ foreach ($result as $row) {
     $datos[0][] = array(
         'id_local'  => $row['id_local'],
         'nombre_local' =>   $row['nombre_local'],
-        'descripcion' =>   $row['descripcion'],
+        'descripcion' =>   obtenerDescripciones($row['id_local']),
         'url_Perfil' => imagePerfil($row['id_local'])
     );
 }
@@ -37,3 +37,25 @@ foreach ($result as $row) {
 
 
 echo json_encode($datos);
+
+
+function obtenerDescripciones( $id_local ){
+    $data = "";
+    try {
+        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
+
+        $query = "SELECT descripcion FROM descripciones where id_local = :id";
+        $result = $pdo->prepare($query);
+        $result->bindValue(':id', $id_local);
+
+        $result->execute();
+    } catch (PDOException $e) {
+        $error = 'Unable to connect to the database server.';
+    }
+
+    foreach ($result as $row){
+            $data = $row['descripcion'];
+        }
+
+    return $data;
+}
