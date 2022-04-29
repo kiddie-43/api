@@ -5,13 +5,12 @@ function html($text)
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function imagePerfil($id_usuario)
-{
+function imagePerfil($id_usuario, $user ){
     // convertir id a numero 
     $id_usuario = intval($id_usuario);
 
     // montra ruta del servidor 
-    $url = $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL . $id_usuario . BARRA;
+    $url = ($user) ?  $_SERVER['DOCUMENT_ROOT'] . URL_USUARIO_LOCAL . $id_usuario . BARRA :  $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL_LOCAL . $id_usuario . BARRA;
 
 
     // comprovar si existe la ruta
@@ -28,7 +27,11 @@ function imagePerfil($id_usuario)
                 // comprobar si es la imagen
                 if (strpos($documentos, 'jpg') || strpos($documentos, 'jpeg') || strpos($documentos, 'png')) {
                     // montar ruta cliente
-                    $archivo = URL_SERVER . URL_IMG . $id_usuario . BARRA . $documentos;
+                    
+// RUTA DEL SERVIDOR
+                    $archivo = ($user) ? URL_SERVER . URL_USUARIO_SERVE . $id_usuario . BARRA . $documentos : URL_SERVER . URL_LOCAL_SERVE . $id_usuario . BARRA . $documentos;
+                    
+                    
                     $perfil = true;
                     break;
                 }
@@ -54,7 +57,7 @@ function carruselImagenes($id_usuario)
     
     
     // montra ruta del servidor 
-    $url = $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL . $id_usuario . BARRA;
+    $url = $_SERVER['DOCUMENT_ROOT'] .URL_LOCAL_LOCAL . $id_usuario . BARRA;
 
     // comprovar si existe la ruta
     $dirint = dir($url);
@@ -67,7 +70,7 @@ function carruselImagenes($id_usuario)
 
             if (strpos($documentos, 'jpg') || strpos($documentos, 'jpeg') || strpos($documentos, 'png')) {
 
-                $archivo = URL_SERVER . URL_IMG . $id_usuario . BARRA . $documentos;
+                $archivo = URL_SERVER . URL_LOCAL_SERVE . $id_usuario . BARRA . $documentos;
 
                // $rutas[] = array('archivo' =>$archivo, 'id' => $index ) ;
                $rutas[] = $archivo;
@@ -87,13 +90,3 @@ function carruselImagenes($id_usuario)
     return $rutas;
 }
 
-// comprueba si esta definido y no esta vacio 
-// function estaDefinido ($dato) {
-//     $resultado = ( $dato != "" ) ? $dato : "";
-
-//     return html($resultado);  
-// }
-
-// function estaVacio($dato) {
-//     return (strlen($dato) > 0 ) ? true : false;
-// }
