@@ -8,7 +8,7 @@ const URL_LOCAL_LOCAL = "/api/img/locales/";
 const URL_LOCAL_SERVE = "img/locales/";
 // Ruta usuarios 
 const URL_USUARIO_LOCAL = "/api/img/usuarios/";
-const URL_USUARIO_SERVE = "img/locales/";
+const URL_USUARIO_SERVE = "img/usuarios/";
 
 // auxiliares
 const BARRA = "/";
