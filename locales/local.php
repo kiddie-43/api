@@ -1,10 +1,6 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/header.php';
-
-
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/routs.php';
-
-
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/helpers.inc.php';
 
 $id_local = (isset($_GET['id_local'])) ? (html($_GET['id_local'])) : 0;
@@ -66,7 +62,7 @@ foreach ($result as $row) {
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>  obtenerDescripciones($row['id_local']),
         'carrusel' => carruselImagenes($row['id_local']),
-        'comentarios' => obtenerComentarios($row['id_local'])
+      //  'comentarios' => obtenerComentarios($row['id_local'])
     );
 }
 
@@ -136,7 +132,7 @@ function obtenerComentarios($id_local)
     try {
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
 
-        $query = "SELECT comentarios.id_comentario as id, comentarios.comentario as comentario, comentarios.puntuacion as valoracion, usuarios.nombre_usuario as nombre_usuario, usuarios.id_usuario as id_usuario FROM locales , comentarios inner join usuarios on comentarios.id_usuario = usuarios.id_usuario WHERE locales.id_local = :id;";
+        $query = "SELECT comentarios.id_comentario as id, comentarios.comentario as comentario, comentarios.puntuacion as valoracion, usuarios.nombre_usuario as nombre_usuario, usuarios.id_usuario as id_usuario FROM locales , comentarios inner join usuarios on comentarios.id_usuario = usuarios.id_usuario WHERE locales.id_local = :id ORDER BY comentarios.fechaComentario DESC; ";
         $result = $pdo->prepare($query);
         $result->bindValue(':id', $id_local);
 
