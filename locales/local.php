@@ -4,76 +4,46 @@ include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/routs.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/helpers.inc.php';
 
 $id_local = (isset($_GET['id_local'])) ? (html($_GET['id_local'])) : 0;
-$response = ['mensaje' => [], 'datos' => []];
 
-$comentarios;
+$data = [
+    'datos'     => [],
+    'mensage'   => []
+];
+
 // SELECT locales.id_local , locales.direccion, locales.nombre_local, locales.descripcion, comentarios.comentario, comentarios.puntuacion, avg(comentarios.puntuacion)*10 FROM locales, comentarios where locales.id_local = 2 and comentarios.id_local = 2;
-
-
-
 try {
-
+    
     include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-
-    $query = "SELECT `id_usuario`, `comentario`, `puntuacion` FROM `comentarios` WHERE `id_local` = :id;";
-
-    $dataComentarios = $pdo->prepare($query);
-    $dataComentarios->bindValue(":id", $id_local);
-    $dataComentarios->execute();
-} catch (PDOException $e) {
-    $error = 'No se pueden obtener los datos del local.';
-    $response['error'] = ['tipoMensaje' => 3,  'mensaje' => $error];
-}
-
-foreach ($dataComentarios as $comentario) {
-}
-
-
-
-
-$datos;
-
-
-
-
-
-try {
-
-
-    include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-
     $query = "SELECT id_local, direccion, nombre_local, descripcion FROM locales where id_local = :id";
-
-
     $result = $pdo->prepare($query);
     $result->bindValue(":id", $id_local);
     $result->execute();
-} catch (PDOException $e) {
+    if($id_local > 0 ){
+        $data['mensage'] = ['mensageType' => 1,  'mensageText' => 'datos obtenidos'];
+    }
 
-    $error = 'No se pueden obtener los datos del local.';
-    $response['error'] = ['tipoMensaje' => 3,  'mensaje' => $error];
+
+} catch (PDOException $e) {
+    $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos del local.'];
+    echo json_encode($data);
+    exit();
 }
 
 foreach ($result as $row) {
 
-    $datos = array(
+    $data['datos'] = array(
         'id_local'  => $row['id_local'],
         'direccion' =>   obtenerDireccion($row['id_local']),
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>  obtenerDescripciones($row['id_local']),
         'carrusel' => carruselImagenes($row['id_local']),
-      //  'comentarios' => obtenerComentarios($row['id_local'])
+      
     );
 }
 
+echo json_encode($data);
 
-
-
-
-
-echo json_encode($datos);
-
-
+// Funciones unicas de un local
 function obtenerDescripciones($id_local)
 {
     $data = [];
@@ -86,7 +56,9 @@ function obtenerDescripciones($id_local)
 
         $result->execute();
     } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
+        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos del local.'];
+        echo json_encode($data);
+        exit();
     }
 
     foreach ($result as $row) {
@@ -115,7 +87,9 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
 
         $result->execute();
     } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
+        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos del local.'];
+        echo json_encode($data);
+        exit();
     }
 
     foreach ($result as $row) {
@@ -123,69 +97,4 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
     }
 
     return $data;
-}
-
-
-function obtenerComentarios($id_local)
-{
-    $data = ['comentarios' => [], 'valoracion' => 0];
-    try {
-        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-
-        $query = "SELECT comentarios.id_comentario as id, comentarios.comentario as comentario, comentarios.puntuacion as valoracion, usuarios.nombre_usuario as nombre_usuario, usuarios.id_usuario as id_usuario FROM locales , comentarios inner join usuarios on comentarios.id_usuario = usuarios.id_usuario WHERE locales.id_local = :id ORDER BY comentarios.fechaComentario DESC; ";
-        $result = $pdo->prepare($query);
-        $result->bindValue(':id', $id_local);
-
-        $result->execute();
-    } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
-    }
-
-    foreach ($result as $row) {
-
-        $data['comentarios'][] = array(
-            'id' => $row['id'], 'comentario' => $row['comentario'], 'valoracion' => $row['valoracion'], 'nombre_usuario' => $row['nombre_usuario'], 'id_usuario' => $row['id_usuario'], 'perfil' => imagePerfil($row['id_usuario'], true)
-        );
-        // , 'perfil'=> imagePerfil($row['id_usuario'], true)
-    }
-
-    $data['valoracion'] = obtenerMedia($id_local);
-
-
-    return $data;
-}
-
-
-
-function obtenerMedia($id_local){
-    
-    // SELECT AVG(comentarios.puntuacion)*10 as media FROM `comentarios` WHERE id_local = 2;
-    $data = 0;
-
-    try {
-        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-
-        $query = "SELECT  AVG(comentarios.puntuacion)*10 as media FROM `comentarios` WHERE id_local = :id;";
-        $result = $pdo->prepare($query);
-        $result->bindValue(':id', $id_local);
-
-        $result->execute();
-    } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
-    }
-
-    foreach ($result as $row) {
-
-        $data = $row['media'];
-        // , 'perfil'=> imagePerfil($row['id_usuario'], true)
-    }
-
-   
-
-    return intVal($data);
-
-
-
-
-   // return ($nota / $comentarios) * 10;
 }

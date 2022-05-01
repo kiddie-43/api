@@ -8,42 +8,13 @@ $id_local = html($_GET['id_local']);
 
 
 $data = [
-    'data'=>[
-         obtenerComentarios($id_local), 
-       
-    ], 
+    'data'=> ['comentarios' => [], 'valoracion' => 0 ], 
     'mensage' => [
         'mensageType' =>0,
         'mensageText'=> ''
     ]
     ]; 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    echo json_encode($data);
-
-
-
-
-
-
-
-
-
-function obtenerComentarios($id_local)
-{
-    $data = ['comentarios' => [], 'valoracion' => 0];
     try {
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
 
@@ -53,7 +24,10 @@ function obtenerComentarios($id_local)
 
         $result->execute();
     } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
+        $data ['mensage']['mensajeType'] = 3;
+        $data ['mensage']['mensajeText'] = 'No ha sido posible obtener los comentarios';
+        echo json_encode($data);
+        exit();
     }
 
     foreach ($result as $row) {
@@ -64,11 +38,34 @@ function obtenerComentarios($id_local)
         // , 'perfil'=> imagePerfil($row['id_usuario'], true)
     }
 
-    $data['valoracion'] = obtenerMedia($id_local);
+
+    try {
+        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
+
+        $query = "SELECT  AVG(comentarios.puntuacion)*10 as media FROM `comentarios` WHERE id_local = :id;";
+        $result = $pdo->prepare($query);
+        $result->bindValue(':id', $id_local);
+
+        $result->execute();
+    } catch (PDOException $e) {
+        $data ['mensage']['mensajeType'] = 3;
+        $data ['mensage']['mensajeText'] = 'No ha sido posible obtener la valoracion';
+        echo json_encode($data);
+        exit();
+    }
+
+    foreach ($result as $row) {
+        $data['data']['valoracion'] = intVal($row['media']);        
+    }
+    echo json_encode($data);
 
 
-    return $data;
-}
+
+
+
+
+
+
 
 
 
@@ -91,13 +88,11 @@ function obtenerMedia($id_local){
 
     foreach ($result as $row) {
 
-        $data = $row['media'];
-        // , 'perfil'=> imagePerfil($row['id_usuario'], true)
+        $data['data']['valoracion'] = intVal($row['media']);
+        
     }
 
    
-
-    return intVal($data);
 
 
 
