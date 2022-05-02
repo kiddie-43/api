@@ -11,7 +11,10 @@ $params = json_decode($json);
 $comentario = html($params->comentario);
 $puntuacion = html($params->puntuacion);
 $id_comentario = html($params->id_comentario);
-
+$data = [
+    'datos'     => [],
+    'mensage'   => []
+];
 
 
 //UPDATE `comentarios` SET `comentario`=,`puntuacion`=,`fechaComentario`= WHERE 1
@@ -38,3 +41,5 @@ try {
 }
 
 echo json_encode($data);
+
+exit();

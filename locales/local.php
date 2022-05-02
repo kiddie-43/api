@@ -14,7 +14,7 @@ $data = [
 try {
     
     include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-    $query = "SELECT id_local, direccion, nombre_local, descripcion FROM locales where id_local = :id";
+    $query = "SELECT id_local, nombre_local FROM locales where id_local = :id";
     $result = $pdo->prepare($query);
     $result->bindValue(":id", $id_local);
     $result->execute();
@@ -37,7 +37,7 @@ foreach ($result as $row) {
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>  obtenerDescripciones($row['id_local']),
         'carrusel' => carruselImagenes($row['id_local']),
-      
+        'valoracion'=> getMediaLocal($row['id_local'])
     );
 }
 
@@ -56,7 +56,7 @@ function obtenerDescripciones($id_local)
 
         $result->execute();
     } catch (PDOException $e) {
-        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos del local.'];
+        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener las descripciones del local.'];
         echo json_encode($data);
         exit();
     }
@@ -67,21 +67,6 @@ function obtenerDescripciones($id_local)
 
     return $data;
 }
-
-
-function obtenerDireccion( $id_local ) {
-     $data = [];
-    try {
-        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-
-        $query = "SELECT ciudades.nombre_ciudad, comunidadautonoma.nombre_comunidad, locales.id_gerente FROM comunidadautonoma inner JOIN ciudades on comunidadautonoma.id_comunidad = ciudades.id_ciudad INNER JOIN locales on ciudades.id_ciudad = locales.id_ciudad WHERE locales.id_local = :id;";
-        $result = $pdo->prepare($query);
-        $result->bindValue(':id', $id_local);
-
-        $result->execute();
-    } catch (PDOException $e) {
-        $error = 'Unable to connect to the database server.';
-    }
 
 function obtenerDireccion($id_local)
 {
@@ -101,7 +86,7 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
 
         $result->execute();
     } catch (PDOException $e) {
-        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos del local.'];
+        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener la direccion del local.'];
         echo json_encode($data);
         exit();
     }
@@ -111,4 +96,32 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
     }
 
     return $data;
+}
+
+
+function getMediaLocal ($id_local){
+
+
+$datos = 0;
+    try {
+
+        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
+    
+        $query = "SELECT  AVG(comentarios.puntuacion)*10 as media FROM `comentarios` WHERE id_local = :id;";
+        $result = $pdo->prepare($query);
+        $result->bindValue(':id', $id_local);
+    
+            $result->execute();
+    } catch (PDOException $e) {
+        $data ['mensage']['mensajeType'] = 3;
+        $data ['mensage']['mensajeText'] = 'No ha sido posible obtener la valoracion';
+        echo json_encode($data);
+        exit();
+    }
+    
+    foreach ($result as $row) {
+        $datos = intVal($row['media']);        
+    }
+    
+    return $datos;
 }
