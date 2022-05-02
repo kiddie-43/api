@@ -1,12 +1,7 @@
 <?php
 
-// if ($_SERVER['DOCUMENT_ROOT'])
-
-
-
-
 // Rutas glovales 
-const URL_SERVER = "http://dws.local/api/";
+const URL_SERVER = "https://eduardobuleodaw.000webhostapp.com/api/";
 
 // Rutas locales
 const URL_LOCAL = "/api/img/locales/";
@@ -17,4 +12,4 @@ const URL_USUARIO_LOCAL = "img/locales/";
 
 // auxiliares
 const BARRA = "/";
-const NO_IMAGE = 'http://dws.local/api/img/utilidades/noPerfil/noImage.png';
+const NO_IMAGE = 'https://eduardobuleodaw.000webhostapp.com/api/img/utilidades/noPerfil/noImage.png';

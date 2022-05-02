@@ -10,10 +10,15 @@ include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/routs.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/helpers.inc.php';
 
+$data = [
+'data'=>[], 
+'mensage'=>[]
+];
+
 try {
     include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
 
-    $query = "SELECT id_local, id_gerente, direccion, nombre_local, descripcion, num_mesas FROM locales";
+    $query = "SELECT id_local, nombre_local  FROM locales";
 
     $result = $pdo->prepare($query);
 
@@ -23,10 +28,10 @@ try {
 }
 
 
-$datos = [];
+
 
 foreach ($result as $row) {
-    $datos[0][] = array(
+    $data['data'][] = array(
         'id_local'  => $row['id_local'],
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>   obtenerDescripciones($row['id_local']),
@@ -36,7 +41,7 @@ foreach ($result as $row) {
 
 
 
-echo json_encode($datos);
+echo json_encode($data);
 
 
 function obtenerDescripciones( $id_local ){
