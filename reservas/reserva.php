@@ -36,6 +36,18 @@ $response = ['data'=>'', 'error'=> 'El local esta cerrado en este horario'];
 
 // la reserva se ha realizado correctamente 
 
+
+
+
+
+
+
+
+
+
+
+
+
 $response = [
     'data'=> [
     'id_reserva' => ' ', 

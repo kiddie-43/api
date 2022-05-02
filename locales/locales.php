@@ -30,7 +30,7 @@ foreach ($result as $row) {
         'id_local'  => $row['id_local'],
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>   obtenerDescripciones($row['id_local']),
-        'url_Perfil' => imagePerfil($row['id_local'])
+        'url_Perfil' => imagePerfil($row['id_local'], false)
     );
 }
 
@@ -59,3 +59,5 @@ function obtenerDescripciones( $id_local ){
 
     return $data;
 }
+
+
