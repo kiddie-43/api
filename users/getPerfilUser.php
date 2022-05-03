@@ -25,13 +25,13 @@ foreach($result as $row){
 }
 
 $data['mensage'] = ['mensageType' => 1, 'mensageText' => 'Datos usuario obtenidos correctamente'];
- print_r($data);
+
 } catch (PDOException $e) {
     $data['mensage'] = ['mensageType' => 3, 'mensageText' => 'El nick introducido no esta disponible'];
     echo json_encode($data);
     exit();
 }
-
+echo json_encode($data);
 
 
 
