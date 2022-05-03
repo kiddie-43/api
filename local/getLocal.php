@@ -102,7 +102,7 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
 function getMediaLocal ($id_local){
 
 
-$datos = 0;
+    $datos = 0;
     try {
 
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
