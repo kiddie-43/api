@@ -64,9 +64,14 @@ $response = ['data'=>'', 'error'=> 'El local esta cerrado en este horario'];
 
 
 
+//INSERT INTO `reserva` (`id_reserva`, `id_local`, `id_usuario`, `fecha_reserva`, `hora_reserva`, `num_personas`, `zona_reserva`, `descripcion`, `id_estado`) VALUES (NULL, '2', '3', CURRENT_DATE(), '19:00', '4', '1', 'Comida con amigos del real de madrid', '2');
 
+/* 
+Intento solo 1 consulta 
 
+SELECT reserva.id_reserva, locales.id_local, locales.nombre_local, reserva.hora_reserva, reserva.fecha_reserva, reserva.id_usuario, usuarios.nombre_usuario, zonalocal.nombre, zonalocal.descripcion, reserva.num_personas as "personas ", estadoreserva.nombreEstado FROM reserva INNER JOIN locales on reserva.id_local = locales.id_local INNER JOIN usuarios on reserva.id_usuario = usuarios.id_usuario INNER JOIN zonalocal on zonalocal.id_zona = reserva.zona_reserva inner join estadoreserva on reserva.id_estado = estadoreserva.id_estado WHERE reserva.id_usuario = 3;
 
+*/
 
 
 
