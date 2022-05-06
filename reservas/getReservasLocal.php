@@ -3,7 +3,7 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/routs.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/helpers.inc.php';
-
+include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/informacionLocal.php';
 $json = file_get_contents('php://input');
 $params = json_decode($json);
 
@@ -13,9 +13,6 @@ $data = [
     'data'      => [],
     'mensage'   => []
 ];
-
-$where = " WHERE reserva.id_usuario = :id ";
-
 
 try {
     include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
@@ -46,31 +43,3 @@ echo json_encode($data);
 $response = ['data' => ' ', 'error' => 'No dispones de ninguna reserva'];
 
 
-
-// Incruir utilidad del id del local para
-function obtenerIdLocal($id_usuario)
-{
-    $id = 0;
-    try {
-
-        include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-        $query = "SELECT `id_local` FROM `locales` WHERE id_gerente =id_gerente WHERE id_usuario= :id";
-        $result = $pdo->prepare($query);
-        $result->bindValue(":id", $id_usuario);
-        $result->execute();
-        foreach ($result as $row) {
-            $id = $row['id'];
-        }
-
-
-
-        $data['mensage'] = ['mensageType' => 1,  'mensageText' => 'datos obtenidos'];
-    } catch (PDOException $e) {
-        $data['mensage'] = ['mensageType' => 3,  'mensageText' => 'No se pueden obtener los datos de si el usuario es hostelero.'];
-        echo json_encode($data);
-        exit();
-    }
-
-
-    return $id;
-}
