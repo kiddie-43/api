@@ -73,8 +73,8 @@ try {
 
 echo json_encode($data);
 
-function concatenarDireccion ( $direccion ){
+// function concatenarDireccion ( $direccion ){
 
 
-return $direccion['comunidad'] .", ". $direccion['ciudad'] .", ". $direccion['calle'] .", ". $direccion['numeroCalle'] ;
-}
+// return $direccion['comunidad'] .", ". $direccion['ciudad'] .", ". $direccion['calle'] .", ". $direccion['numeroCalle'] ;
+// }

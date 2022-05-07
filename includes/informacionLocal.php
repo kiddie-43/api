@@ -30,31 +30,37 @@ SELECT id_ciudad FROM locales WHERE locales.id_local = 2
     return $data;
 }
 
+function concatenarDireccion($lista)
+{
+    return $lista['comunidad'] . ', ' . $lista['ciudad'] . ', ' . $lista['calle'] . ', ' . $lista['numeroCalle'];
+}
 
-function getMediaLocal ($id_local){
+
+function getMediaLocal($id_local)
+{
 
 
     $datos = 0;
     try {
 
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-    
+
         $query = "SELECT  AVG(comentarios.puntuacion)*10 as media FROM `comentarios` WHERE id_local = :id;";
         $result = $pdo->prepare($query);
         $result->bindValue(':id', $id_local);
-    
-            $result->execute();
+
+        $result->execute();
     } catch (PDOException $e) {
-        $data ['mensage']['mensajeType'] = 3;
-        $data ['mensage']['mensajeText'] = 'No ha sido posible obtener la valoracion';
+        $data['mensage']['mensajeType'] = 3;
+        $data['mensage']['mensajeText'] = 'No ha sido posible obtener la valoracion';
         echo json_encode($data);
         exit();
     }
-    
+
     foreach ($result as $row) {
-        $datos = intVal($row['media']);        
+        $datos = intVal($row['media']);
     }
-    
+
     return $datos;
 }
 
@@ -110,7 +116,8 @@ function obtenerIdLocal($id_usuario)
 
     return $id;
 }
-function obtenerZonasLocal($id) {
+function obtenerZonasLocal($id)
+{
     $data = [];
     try {
 
@@ -120,7 +127,7 @@ function obtenerZonasLocal($id) {
         $result->bindValue(":id", $id);
         $result->execute();
         foreach ($result as $row) {
-           $data[] = [ 'id_zona'=>$row['id_zona'], 'nombre'=>$row['nombre']  ];
+            $data[] = ['id_zona' => $row['id_zona'], 'nombre' => $row['nombre']];
         }
 
 
