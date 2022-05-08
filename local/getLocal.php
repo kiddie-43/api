@@ -33,7 +33,7 @@ foreach ($result as $row) {
 
     $data['datos'] = array(
         'id_local'  => $row['id_local'],
-        'direccion' =>   obtenerDireccion($row['id_local']),
+        'direccion' =>  concatenarDireccion( obtenerDireccion($row['id_local'])),
         'nombre_local' =>   $row['nombre_local'],
         'descripcion' =>  obtenerDescripciones($row['id_local']),
         'carrusel' => carruselImagenes($row['id_local']),

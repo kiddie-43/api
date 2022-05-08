@@ -20,12 +20,12 @@ $data = [
     try {
     
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-        $query = "SELECT COUNT(*) as hostelero FROM usuarios INNER join locales on usuarios.id_usuario = locales.id_gerente WHERE id_usuario= :id";
+        $query = "SELECT COUNT(*) as hostelero, locales.id_local FROM usuarios INNER join locales on usuarios.id_usuario = locales.id_gerente WHERE id_usuario= :id";
         $result = $pdo->prepare($query);
         $result->bindValue(":id", $id_usuario);
         $result->execute();
             foreach($result as $row){
-                $data['data'] = $row['hostelero'] == 0 ? false : true;
+                $data['data'][] =['hostelero'=> $row['hostelero'] == 0 ? false : true , 'id_local'=>$row['hostelero'] == null ?  0: $row['id_local']  ];
             }
 
 

@@ -122,12 +122,12 @@ function obtenerZonasLocal($id)
     try {
 
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-        $query = "SELECT `id_zona`, `nombre` FROM `zonalocal` WHERE `id_local` = :id";
+        $query = "SELECT `id_zona`, `nombre`, descripcion FROM `zonalocal` WHERE `id_local` = :id";
         $result = $pdo->prepare($query);
         $result->bindValue(":id", $id);
         $result->execute();
         foreach ($result as $row) {
-            $data[] = ['id_zona' => $row['id_zona'], 'nombre' => $row['nombre']];
+            $data[] = ['id_zona' => $row['id_zona'], 'nombre' => $row['nombre'], 'descripcion'=>$row['descripcion']];
         }
 
 
