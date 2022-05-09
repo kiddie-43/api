@@ -111,14 +111,6 @@ if ($temporal) {
     exit();
 }
 
-
-
-
-
-
-
-
-
     try {
 
         // conexion base de datos
@@ -134,18 +126,25 @@ if ($temporal) {
         $id = $pdo->lastInsertId();
         $data['mensage'] = ['mensageType' => 1, 'mensageText' => 'usuario registrado'];
         $data['data'] =   $id ;
-        echo ($_SERVER['DOCUMENT_ROOT']);
-        $rutaUsuario = $_SERVER['DOCUMENT_ROOT'] . '/api/img/usuarios/'.$id."/";
+           
+      $rutaUsuario = $_SERVER['DOCUMENT_ROOT'] . "/api/img/usuarios/$id";  
+
+   
+   
+   if (!is_dir( $rutaUsuario)){
     
-        
-    if (!file_exists($rutaUsuario)) {
-        mkdir($rutaUsuario, 0777, true);
+    if (mkdir($rutaUsuario, 0777, true)){
+    echo json_encode($data);       
     }
     
-        mkdir($rutaUsuario, true);
-        echo json_encode($data);
+    
+   }
+    
+    
+   
     } catch (PDOException $e) {
         $data['mensage'] = ['mensageType' => 3, 'mensageText' => 'no se pudo crear el usuario'];
         echo json_encode($data);
         exit();
-    }
+    }     
+    

@@ -5,12 +5,13 @@ function html($text)
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function imagePerfil($id_usuario, $user ){
+function imagePerfil($id_usuario, $user)
+{
     // convertir id a numero 
     $id_usuario = intval($id_usuario);
 
     // montra ruta del servidor 
-    $url = ($user) ?  $_SERVER['DOCUMENT_ROOT'] . URL_USUARIO_LOCAL . $id_usuario . BARRA :  $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL_LOCAL . $id_usuario . BARRA;
+    $url = ($user) ?  $_SERVER['DOCUMENT_ROOT'] . "/api/img/usuarios/" . $id_usuario . "/" :  $_SERVER['DOCUMENT_ROOT'] . "/api/img/locales/" . $id_usuario . "/";
 
 
     // comprovar si existe la ruta
@@ -21,17 +22,19 @@ function imagePerfil($id_usuario, $user ){
     try {
         // recorrer documentos
         while (($documentos = $dirint->read()) != false) {
+            
+            $search = "perfil";
             // comprobar si es un perfil 
-            if (str_contains($documentos, "perfil")) {
-
+         //   if (strpos($documentos, "perfil")) {
+if (            preg_match("/{$search}/i", $documentos)){
                 // comprobar si es la imagen
                 if (strpos($documentos, 'jpg') || strpos($documentos, 'jpeg') || strpos($documentos, 'png')) {
                     // montar ruta cliente
-                    
-// RUTA DEL SERVIDOR
-                    $archivo = ($user) ? URL_SERVER . URL_USUARIO_SERVE . $id_usuario . BARRA . $documentos : URL_SERVER . URL_LOCAL_SERVE . $id_usuario . BARRA . $documentos;
-                    
-                    
+
+                    // RUTA DEL SERVIDORURL_IMG_LOCAL
+                    $archivo = ($user) ? URL_SERVER . URL_USUARIO_IMG . $id_usuario . BARRA . $documentos : URL_SERVER . URL_IMG_LOCAL . $id_usuario . BARRA . $documentos;
+
+
                     $perfil = true;
                     break;
                 }
@@ -44,7 +47,7 @@ function imagePerfil($id_usuario, $user ){
 
 
     if (!$perfil) {
-        $archivo = NO_IMAGE;
+        $archivo = "https://eduardobuleodaw.000webhostapp.com/api/img/utilidades/noPerfil/noImage.png";
     }
 
 
@@ -54,10 +57,10 @@ function carruselImagenes($id_usuario)
 {
     // convertir id a numero 
     $id_usuario = intval($id_usuario);
-    
-    
+
+
     // montra ruta del servidor 
-    $url = $_SERVER['DOCUMENT_ROOT'] .URL_LOCAL_LOCAL . $id_usuario . BARRA;
+    $url = $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL . $id_usuario . BARRA;
 
     // comprovar si existe la ruta
     $dirint = dir($url);
@@ -70,11 +73,11 @@ function carruselImagenes($id_usuario)
 
             if (strpos($documentos, 'jpg') || strpos($documentos, 'jpeg') || strpos($documentos, 'png')) {
 
-                $archivo = URL_SERVER . URL_LOCAL_SERVE . $id_usuario . BARRA . $documentos;
+                $archivo = URL_SERVER . URL_IMG_LOCAL . $id_usuario . BARRA . $documentos;
 
-               // $rutas[] = array('archivo' =>$archivo, 'id' => $index ) ;
-               $rutas[] = $archivo;
-               $index = $index+1;
+                // $rutas[] = array('archivo' =>$archivo, 'id' => $index ) ;
+                $rutas[] = $archivo;
+                $index = $index + 1;
             }
         }
         // cerrar directorio
@@ -89,4 +92,3 @@ function carruselImagenes($id_usuario)
 
     return $rutas;
 }
-

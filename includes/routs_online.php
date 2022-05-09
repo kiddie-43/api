@@ -7,8 +7,8 @@ const URL_SERVER = "https://eduardobuleodaw.000webhostapp.com/api/";
 const URL_LOCAL = "/api/img/locales/";
 const URL_IMG_LOCAL = "img/locales/";
 // Ruta usuarios 
-const URL_USUARIO = "/api/img/locales/";
-const URL_USUARIO_LOCAL = "img/locales/";
+const URL_USUARIO = "/api/img/usuarios/";
+const URL_USUARIO_IMG = "img/usuarios/";
 
 // auxiliares
 const BARRA = "/";
