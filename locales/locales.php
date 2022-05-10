@@ -23,8 +23,11 @@ try {
     $result = $pdo->prepare($query);
 
     $result->execute();
+$data['mensage'] = ['mensageType'=>1, 'mensajeText'=>'Datos obtenidos correctamente'];
+
 } catch (PDOException $e) {
     $error = 'Unable to connect to the database server.';
+$data['mensage'] = ['mensageType'=>3, 'mensajeText'=>'No se han podido obtener los datos'];
 }
 
 

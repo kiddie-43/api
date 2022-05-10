@@ -11,7 +11,7 @@ function imagePerfil($id_usuario, $user)
     $id_usuario = intval($id_usuario);
 
     // montra ruta del servidor 
-    $url = ($user) ?  $_SERVER['DOCUMENT_ROOT'] . "/api/img/usuarios/" . $id_usuario . "/" :  $_SERVER['DOCUMENT_ROOT'] . "/api/img/locales/" . $id_usuario . "/";
+    $url = ($user) ?  $_SERVER['DOCUMENT_ROOT'] . URL_USUARIO . $id_usuario . BARRA :  $_SERVER['DOCUMENT_ROOT'] . URL_LOCAL . $id_usuario . BARRA;
 
 
     // comprovar si existe la ruta
@@ -22,11 +22,9 @@ function imagePerfil($id_usuario, $user)
     try {
         // recorrer documentos
         while (($documentos = $dirint->read()) != false) {
-            
-            $search = "perfil";
             // comprobar si es un perfil 
-         //   if (strpos($documentos, "perfil")) {
-if (            preg_match("/{$search}/i", $documentos)){
+            if (strpos($documentos, "perfil")) {
+
                 // comprobar si es la imagen
                 if (strpos($documentos, 'jpg') || strpos($documentos, 'jpeg') || strpos($documentos, 'png')) {
                     // montar ruta cliente
@@ -47,7 +45,7 @@ if (            preg_match("/{$search}/i", $documentos)){
 
 
     if (!$perfil) {
-        $archivo = "https://eduardobuleodaw.000webhostapp.com/api/img/utilidades/noPerfil/noImage.png";
+        $archivo = NO_IMAGE;
     }
 
 

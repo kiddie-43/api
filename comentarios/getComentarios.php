@@ -21,7 +21,7 @@ $id_local = html($_GET['id_local']);
     
     try {
         include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/db.inc.php';
-        $query = "SELECT comentarios.id_comentario as id, comentarios.comentario as comentario, comentarios.puntuacion as valoracion, usuarios.nombre_usuario as nombre_usuario, usuarios.id_usuario as id_usuario FROM locales , comentarios inner join usuarios on comentarios.id_usuario = usuarios.id_usuario WHERE locales.id_local = :id ORDER BY comentarios.fechaComentario DESC; ";
+        $query = "SELECT comentarios.id_comentario as id, comentarios.comentario as comentario, comentarios.puntuacion as valoracion, usuarios.nombre_usuario as nombre_usuario, usuarios.id_usuario as id_usuario FROM locales , comentarios inner join usuarios on comentarios.id_usuario = usuarios.id_usuario WHERE locales.id_local = :id ORDER BY comentarios.id_comentario DESC; ";
         $result = $pdo->prepare($query);
         $result->bindValue(':id', $id_local);
 
